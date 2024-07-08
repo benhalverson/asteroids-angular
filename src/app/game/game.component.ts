@@ -19,16 +19,15 @@ export class GameComponent {
 
   private initializeGame() {
     console.log('initializeGame');
-    this.ship = new Ship(400, 300);
-    for (let i = 0; i < 10; i++) {
-      this.asteroids.push(
-        new Asteroid(
-          Math.random() * 800,
-          Math.random() * 600,
-          Math.random() * 40 + 20
-        )
-      );
+    this.ship = new Ship(this.gameCanvas.nativeElement.width / 2, this.gameCanvas.nativeElement.height / 2);
+    const numberOfAsteroids = 5;
+    for (let i = 0; i < numberOfAsteroids; i++) {
+      const x = Math.random() * this.gameCanvas.nativeElement.width;
+      const y = Math.random() * this.gameCanvas.nativeElement.height;
+      const size = 20 + Math.random() * 30;
+      this.asteroids.push(new Asteroid(x, y, size));
     }
+
   }
 
   private updateGame() {
@@ -41,14 +40,17 @@ export class GameComponent {
   private drawGame() {
     this.ship.draw(this.context);
     for (let asteroid of this.asteroids) {
+      console.log('asteroid', asteroid);
       asteroid.draw(this.context);
     }
   }
 
-  private clearCandvas() { }
+  private clearCanvas() {
+    this.context.clearRect(0,0, this.gameCanvas.nativeElement.width, this.gameCanvas.nativeElement.height);
+   }
 
   private gameLoop() {
-    this.clearCandvas();
+    this.clearCanvas();
     this.updateGame();
     this.drawGame();
     requestAnimationFrame(() => this.gameLoop());
@@ -56,13 +58,13 @@ export class GameComponent {
 
   private handleInput() {
     // if (this.inputService.keys['ArrowUp'] || this.inputService.keys['w']) {
-    if (this.inputService.keys['ArrowUp']) {
+    if (this.inputService.isKeyPressed('ArrowUp')) {
       this.ship.moveForward();
     }
-    if (this.inputService.keys['ArrowLeft']) {
+    if (this.inputService.isKeyPressed('ArrowLeft')) {
       this.ship.rotateLeft();
     }
-    if (this.inputService.keys['ArrowRight']) {
+    if (this.inputService.isKeyPressed('ArrowRight')) {
       this.ship.rotateRight();
     }
     if (this.inputService.keys[' ']) {
@@ -78,7 +80,6 @@ export class GameComponent {
       this.context = this.gameCanvas.nativeElement.getContext('2d')!;
       this.initializeGame();
       requestAnimationFrame(() => this.gameLoop());
-
       this.handleInput();
     } else {
       console.error('Canvas element is not initialized');

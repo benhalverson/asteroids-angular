@@ -57,6 +57,7 @@ export class Ship {
   }
 
   rotateRight() {
+    console.log('rotateRight');
     this.angle += this.rotationSpeed;
   }
 

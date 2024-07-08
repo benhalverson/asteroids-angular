@@ -13,7 +13,26 @@ export class Asteroid {
     this.direction = Math.random() * 2 * Math.PI;
   }
 
-  update() {}
+  update() {
+    this.x += this.speed * Math.cos(this.direction);
+    this.y += this.speed * Math.sin(this.direction);
+
+    if (this.x < 0) {
+      this.x = 800;
+    }
+
+    if (this.x > 800) {
+      this.x -= 800;
+    }
+
+    if (this.y < 0) {
+      this.y += 600;
+    }
+
+    if (this.y > 600) {
+      this.y -= 600;
+    }
+  }
 
   draw(context: CanvasRenderingContext2D) {
     context.save();

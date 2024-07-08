@@ -12,13 +12,16 @@ export class InputService {
 
   private onKeyDown(event: KeyboardEvent) {
     this.keysSignal.update((keys) => {
-      keys[event.key] = true;
+      console.log('keyDown', );
+      console.log('event.key', event.key);
+      // keys[event.key] = true;
       return keys;
     });
   }
 
   private onKeyUp(event: KeyboardEvent) {
     this.keysSignal.update((keys) => {
+      console.log('keyup', keys)
       keys[event.key] = false;
       return keys;
     });
